@@ -1,5 +1,5 @@
 """
-网易财经新闻爬虫项目
-Author: GitHub Copilot
-Date: 2025-06-30
+新闻爬虫项目
+Author: GCH空城
+Date: 2025-07-08
 """

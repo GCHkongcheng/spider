@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 """
 新闻网站检测器
-Author: GitHub Copilot
-Date: 2025-06-30
+Author: GCH空城
+Date: 2025-07-08
 Description: 检测和验证新闻网站的可用性和结构
 """
 
@@ -173,9 +173,9 @@ class SiteDetector:
                 }
                 
                 if is_valid:
-                    self.logger.info(f"✓ {site_name}: {message}")
+                    self.logger.info(f"[OK] {site_name}: {message}")
                 else:
-                    self.logger.warning(f"⚠ {site_name}: {message}")
+                    self.logger.warning(f"[WARN] {site_name}: {message}")
             else:
                 results[site_name] = {
                     'status': 'failed',
@@ -230,7 +230,7 @@ if __name__ == "__main__":
     print(f"\n检测结果:")
     print("=" * 40)
     for site_name, result in results.items():
-        status_icon = "✓" if result['status'] == 'success' else "⚠" if result['status'] == 'partial' else "✗"
+        status_icon = "[OK]" if result['status'] == 'success' else "[WARN]" if result['status'] == 'partial' else "[FAIL]"
         print(f"{status_icon} {site_name}: {result['message']}")
     
     print(f"\n可用网站数量: {len(available_sites)}")

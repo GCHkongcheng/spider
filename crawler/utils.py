@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 """
 工具函数模块
-Author: GitHub Copilot
-Date: 2025-06-30
-Description: 通用工具函数
+Author: GCH空城
+Date: 2025-07-08
+Description: 各种实用的小工具
 """
 
 import re
@@ -27,7 +27,7 @@ def setup_logger(name, level=logging.INFO):
     Returns:
         logging.Logger: 配置好的日志记录器
     """
-    # 确保日志目录存在
+    # 确保data目录存在
     log_dir = "data"
     if not os.path.exists(log_dir):
         os.makedirs(log_dir)
@@ -36,22 +36,22 @@ def setup_logger(name, level=logging.INFO):
     logger = logging.getLogger(name)
     logger.setLevel(level)
     
-    # 如果已经有处理器，直接返回
+    # 防止重复添加处理器
     if logger.handlers:
         return logger
     
-    # 创建格式化器
+    # 日志格式，包含时间和级别
     formatter = logging.Formatter(
         '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
     )
     
-    # 文件处理器
+    # 保存到文件
     log_file = os.path.join(log_dir, 'spider.log')
     file_handler = logging.FileHandler(log_file, encoding='utf-8')
     file_handler.setLevel(level)
     file_handler.setFormatter(formatter)
     
-    # 控制台处理器
+    # 同时输出到控制台，方便调试
     console_handler = logging.StreamHandler()
     console_handler.setLevel(level)
     console_handler.setFormatter(formatter)
@@ -79,14 +79,30 @@ def clean_text(text):
     # 移除HTML标签
     text = re.sub(r'<[^>]+>', '', text)
     
-    # 替换多个空白字符为单个空格
+    # 移除JavaScript代码
+    text = re.sub(r'<script[^>]*>.*?</script>', '', text, flags=re.DOTALL | re.IGNORECASE)
+    
+    # 移除CSS样式
+    text = re.sub(r'<style[^>]*>.*?</style>', '', text, flags=re.DOTALL | re.IGNORECASE)
+    
+    # 移除多余的空白字符
     text = re.sub(r'\s+', ' ', text)
+    
+    # 移除数字时间戳（如：20250707 151012）
+    text = re.sub(r'\b\d{8}\s+\d{6}\b', '', text)
+    
+    # 移除单独的数字和时间
+    text = re.sub(r'\b\d{4}\b', '', text)  # 年份
+    text = re.sub(r'\b\d{1,2}:\d{2}\b', '', text)  # 时间
     
     # 移除首尾空白
     text = text.strip()
     
-    # 移除特殊字符但保留中文标点
-    text = re.sub(r'[^\w\s\u4e00-\u9fff，。、；：""''！？（）【】《》]', '', text)
+    # 清理特殊字符但保留中文标点
+    text = re.sub(r'[^\w\s\u4e00-\u9fff，。、；：""''！？（）【】《》-]', '', text)
+    
+    # 移除多余的分隔符
+    text = re.sub(r'[-|]{2,}', '', text)
     
     return text
 
@@ -203,7 +219,7 @@ def is_news_url(url, keywords=None):
         r'javascript:',
         r'mailto:',
         r'^#',
-        r'\.(jpg|png|gif|pdf|doc|zip|rar)$'
+        r'\\.(jpg|png|gif|pdf|doc|zip|rar)$'
     ]
     
     for pattern in exclude_patterns:

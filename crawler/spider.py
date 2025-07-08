@@ -119,7 +119,7 @@ class NetEaseFinanceSpider:
         # 检查是否包含新闻相关的路径
         news_patterns = [
             r'/\d{4}/\d{2}/\d{2}/',  # 日期格式
-            r'\.html$',  # html结尾
+            r'\\.html$',  # html结尾
             r'/article/',  # 文章路径
             r'/news/',   # 新闻路径
         ]
@@ -192,7 +192,7 @@ class NetEaseFinanceSpider:
             return "暂无摘要"
         
         # 清理文本
-        content = re.sub(r'\s+', ' ', content)
+        content = re.sub(r'\\s+', ' ', content)
         content = content.strip()
         
         # 如果内容较短，直接返回
