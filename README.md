@@ -47,8 +47,6 @@ crawler/
 ├── .venv/                      # 虚拟环境目录
 ├── requirements.txt            # 依赖包列表
 ├── run.py                      # 快速运行脚本
-├── generate_docx_report.py     # 实验报告生成脚本
-├── 智能通用新闻爬虫系统实验报告.docx  # 实验报告文档
 └── README.md                   # 项目说明
 ```
 
